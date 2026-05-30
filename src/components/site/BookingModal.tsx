@@ -1,43 +1,54 @@
+import { useState, useCallback } from "react";
 import { X } from "lucide-react";
+import { useLang } from "@/lib/lang-context";
 
 export function BookingModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { t } = useLang();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [date, setDate] = useState("");
+  const [service, setService] = useState("General Medicine");
+  const [message, setMessage] = useState("");
+
+  const handleName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value), []);
+  const handlePhone = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value), []);
+  const handleDate = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setDate(e.target.value), []);
+  const handleService = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => setService(e.target.value), []);
+  const handleMessage = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value), []);
+
   if (!open) return null;
 
-  const handleSubmit = () => {
-    const name = (document.getElementById("bname") as HTMLInputElement).value;
-    const phone = (document.getElementById("bphone") as HTMLInputElement).value;
-    const date = (document.getElementById("bdate") as HTMLInputElement).value;
-    const service = (document.getElementById("bservice") as HTMLSelectElement).value;
-    const message = (document.getElementById("bmessage") as HTMLTextAreaElement).value;
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
     const text = `*New Appointment Request*%0A%0AName: ${name}%0APhone: ${phone}%0ADate: ${date}%0AService: ${service}%0AMessage: ${message}`;
     window.open(`https://wa.me/919901515300?text=${text}`, "_blank");
     onClose();
   };
 
   return (
-    <div style={{position:"fixed",inset:0,zIndex:50,background:"rgba(0,0,0,0.6)",display:"flex",alignItems:"center",justifyContent:"center",padding:"1rem"}} onClick={onClose}>
-      <div style={{background:"white",width:"100%",maxWidth:"28rem",borderRadius:"1rem",padding:"1.5rem"}} onClick={e => e.stopPropagation()}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1rem"}}>
-          <h3 style={{fontSize:"1.25rem",fontWeight:"bold",color:"#2e7bc4"}}>Book Appointment</h3>
-          <button onClick={onClose} style={{padding:"0.5rem",cursor:"pointer",border:"none",background:"none"}}>
-            <X size={20} />
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={onClose}>
+      <div className="bg-card w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 shadow-soft" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-primary">{t.booking.title}</h3>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-muted min-h-11 min-w-11" aria-label={t.booking.close}>
+            <X className="h-5 w-5" />
           </button>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:"0.75rem"}}>
-          <input id="bname" placeholder="Full Name" style={{padding:"0.75rem",borderRadius:"0.5rem",border:"1px solid #d1dce8",fontSize:"1rem",width:"100%"}} />
-          <input id="bphone" type="tel" placeholder="Phone Number" style={{padding:"0.75rem",borderRadius:"0.5rem",border:"1px solid #d1dce8",fontSize:"1rem",width:"100%"}} />
-          <input id="bdate" type="date" style={{padding:"0.75rem",borderRadius:"0.5rem",border:"1px solid #d1dce8",fontSize:"1rem",width:"100%"}} />
-          <select id="bservice" style={{padding:"0.75rem",borderRadius:"0.5rem",border:"1px solid #d1dce8",fontSize:"1rem",width:"100%"}}>
+        <form onSubmit={submit} className="flex flex-col gap-3">
+          <input required placeholder={t.booking.name} value={name} onChange={handleName} className="px-4 py-3 rounded-lg border border-input bg-background min-h-12" />
+          <input required type="tel" placeholder={t.booking.phone} value={phone} onChange={handlePhone} className="px-4 py-3 rounded-lg border border-input bg-background min-h-12" />
+          <input required type="date" value={date} onChange={handleDate} className="px-4 py-3 rounded-lg border border-input bg-background min-h-12" />
+          <select value={service} onChange={handleService} className="px-4 py-3 rounded-lg border border-input bg-background min-h-12">
             <option>General Medicine</option>
             <option>OB-GYN</option>
             <option>Ultrasound</option>
             <option>Pharmacy</option>
           </select>
-          <textarea id="bmessage" placeholder="Message (optional)" rows={3} style={{padding:"0.75rem",borderRadius:"0.5rem",border:"1px solid #d1dce8",fontSize:"1rem",width:"100%"}} />
-          <button onClick={handleSubmit} style={{background:"linear-gradient(135deg,#2e7bc4,#5ba8d4)",color:"white",fontWeight:"600",padding:"1rem",borderRadius:"0.75rem",border:"none",cursor:"pointer",fontSize:"1rem"}}>
-            Send via WhatsApp
+          <textarea placeholder={t.booking.message} value={message} onChange={handleMessage} className="px-4 py-3 rounded-lg border border-input bg-background min-h-24" rows={3} />
+          <button type="submit" className="bg-gradient-hero text-white font-semibold py-4 rounded-xl shadow-soft min-h-12">
+            {t.booking.submit}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
