@@ -131,12 +131,12 @@ function Page() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">{t.mission.title}</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+            <div className="bg-white/10 rounded-2xl p-8 border border-white/20">
               <Heart className="h-10 w-10 mb-4" />
               <h3 className="text-2xl font-bold mb-3">{t.mission.mTitle}</h3>
               <p className="text-white/90 leading-relaxed">{t.mission.mText}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+            <div className="bg-white/10 rounded-2xl p-8 border border-white/20">
               <ShieldCheck className="h-10 w-10 mb-4" />
               <h3 className="text-2xl font-bold mb-3">{t.mission.vTitle}</h3>
               <p className="text-white/90 leading-relaxed">{t.mission.vText}</p>
