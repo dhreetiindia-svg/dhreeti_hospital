@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Appointment — Dhreeti Clinic</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f9fc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(46,123,196,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #2e7bc4, #5ba8d4);
+      padding: 1.5rem;
+      text-align: center;
+      color: white;
+    }
+    .header .url { font-size: 11px; opacity: 0.8; margin-bottom: 4px; }
+    .header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    .header p { font-size: 13px; opacity: 0.85; }
+    .form { padding: 1.5rem; display: flex; flex-direction: column; gap: 14px; }
+    label { font-size: 13px; color: #6b7f99; display: block; margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1dce8;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      background: white;
+      color: #1e2a3a;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #2e7bc4;
+    }
+    textarea { resize: vertical; }
+    .btn {
+      background: linear-gradient(135deg, #2e7bc4, #5ba8d4);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      width: 100%;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:hover { opacity: 0.95; }
+    .back {
+      text-align: center;
+      margin-top: 4px;
+    }
+    .back a {
+      font-size: 13px;
+      color: #6b7f99;
+      text-decoration: none;
+    }
+    .back a:hover { color: #2e7bc4; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="url">dhreeticlinics.com/book</div>
+      <h1>Book an Appointment</h1>
+      <p>Dhreeti Clinic — Ara, Bihar</p>
+    </div>
+    <div class="form">
+      <div>
+        <label>Full Name *</label>
+        <input type="text" id="name" placeholder="e.g. Ramesh Kumar" />
+      </div>
+      <div>
+        <label>Phone Number *</label>
+        <input type="tel" id="phone" placeholder="+91 98765 43210" />
+      </div>
+      <div>
+        <label>Preferred Date *</label>
+        <input type="date" id="date" />
+      </div>
+      <div>
+        <label>Service</label>
+        <select id="service">
+          <option>General Medicine</option>
+          <option>OB-GYN</option>
+          <option>Ultrasound</option>
+          <option>Pharmacy</option>
+        </select>
+      </div>
+      <div>
+        <label>Message (optional)</label>
+        <textarea id="message" rows="3" placeholder="Any additional details..."></textarea>
+      </div>
+      <button class="btn" onclick="sendBooking()">Send via WhatsApp</button>
+      <div class="back"><a href="/">← Back to home</a></div>
+    </div>
+  </div>
+
+  <script>
+    function sendBooking() {
+      var name = document.getElementById('name').value.trim();
+      var phone = document.getElementById('phone').value.trim();
+      var date = document.getElementById('date').value;
+      var service = document.getElementById('service').value;
+      var message = document.getElementById('message').value.trim();
+
+      if (!name) { alert('Please enter your name'); return; }
+      if (!phone) { alert('Please enter your phone number'); return; }
+      if (!date) { alert('Please select a date'); return; }
+
+      var text = '*New Appointment Request*%0A%0A'
+        + 'Name: ' + encodeURIComponent(name) + '%0A'
+        + 'Phone: ' + encodeURIComponent(phone) + '%0A'
+        + 'Date: ' + encodeURIComponent(date) + '%0A'
+        + 'Service: ' + encodeURIComponent(service) + '%0A'
+        + 'Message: ' + encodeURIComponent(message);
+
+      window.open('https://wa.me/919901515300?text=' + text, '_blank');
+    }
+  </script>
+</body>
+</html>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Phone, MapPin, Stethoscope, Baby, Activity, Pill, Ambulance,
@@ -7,7 +6,6 @@ import {
 import { LangProvider, useLang } from "@/lib/lang-context";
 import { Header } from "@/components/site/Header";
 import { WhatsAppFab } from "@/components/site/WhatsAppFab";
-import { BookingModal } from "@/components/site/BookingModal";
 import logo from "@/assets/logo.png";
 import doctors from "@/assets/doctors.jpeg";
 import baby from "@/assets/baby.jpeg";
@@ -28,22 +26,12 @@ export const Route = createFileRoute("/")({
   }),
   component: () => (
     <LangProvider>
-      <PageWithModal />
+      <Page />
     </LangProvider>
   ),
 });
 
-function PageWithModal() {
-  const [booking, setBooking] = useState(false);
-  return (
-    <>
-      <Page onBook={() => setBooking(true)} />
-      <BookingModal open={booking} onClose={() => setBooking(false)} />
-    </>
-  );
-}
-
-function Page({ onBook }: { onBook: () => void }) {
+function Page() {
   const { t } = useLang();
 
   return (
@@ -62,9 +50,9 @@ function Page({ onBook }: { onBook: () => void }) {
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-xl">{t.hero.subtitle}</p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button onClick={onBook} className="bg-gradient-hero text-white font-semibold px-6 py-4 rounded-xl shadow-soft min-h-12 inline-flex items-center justify-center gap-2">
+              <a href="/book" className="bg-gradient-hero text-white font-semibold px-6 py-4 rounded-xl shadow-soft min-h-12 inline-flex items-center justify-center gap-2">
                 <Calendar className="h-5 w-5" /> {t.hero.cta1}
-              </button>
+              </a>
               <a href="tel:+919901515300" className="bg-card border-2 border-primary text-primary font-semibold px-6 py-4 rounded-xl min-h-12 inline-flex items-center justify-center gap-2">
                 <Phone className="h-5 w-5" /> {t.hero.cta2}
               </a>
@@ -99,7 +87,7 @@ function Page({ onBook }: { onBook: () => void }) {
             <p className="text-muted-foreground mt-2">{t.actionCenter.subtitle}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <ActionCard icon={<Calendar className="h-7 w-7" />} title={t.actions.appointment} desc={t.actions.appointmentDesc} onClick={onBook} />
+            <ActionCard icon={<Calendar className="h-7 w-7" />} title={t.actions.appointment} desc={t.actions.appointmentDesc} href="/book" />
             <ActionCard icon={<FlaskConical className="h-7 w-7" />} title={t.actions.lab} desc={t.actions.labDesc} href="https://wa.me/919901515300?text=I%20want%20to%20book%20a%20Blood%2FUrine%20test" />
             <ActionCard icon={<ShoppingBag className="h-7 w-7" />} title={t.actions.meds} desc={t.actions.medsDesc} href="https://wa.me/919901515300?text=I%20want%20to%20order%20medicines" />
           </div>
